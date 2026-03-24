@@ -206,7 +206,6 @@ int main()
     cout << "中缀表达式：" << infix4 << endl;
     cout << "后缀表达式：" << postfix4 << endl << endl;
     
-    // 测试用例 5：图片中的例子（简化版）
     char infix5[] = "((15/(7-(1+1)))*3)-(2+(1+1))";
     char postfix5[100];
     InfixToPostfix(infix5, postfix5);
