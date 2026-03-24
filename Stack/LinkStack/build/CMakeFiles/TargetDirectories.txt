@@ -1,0 +1,3 @@
+/Users/heyuhang/Date_Structure/Stack/LinkStack/build/CMakeFiles/LinkStack.dir
+/Users/heyuhang/Date_Structure/Stack/LinkStack/build/CMakeFiles/edit_cache.dir
+/Users/heyuhang/Date_Structure/Stack/LinkStack/build/CMakeFiles/rebuild_cache.dir
