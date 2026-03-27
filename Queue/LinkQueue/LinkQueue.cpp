@@ -44,7 +44,7 @@ bool enLinkQueue(LinkQueue &Q, int e)
     return true;
 }
 
-//出队
+//出队，出队
 bool deLinkQueue(LinkQueue &Q, int &e)
 {
     if(Q.front == Q.rear)

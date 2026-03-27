@@ -1,4 +1,4 @@
-
+#include <climits>
 #include <iostream>
 
 const int MaxLen = 255;
@@ -69,4 +69,74 @@ HString StrCopy(HString &S)
     }
     T.length = S.length;
     return T;
+}
+//判空
+bool StrEmpty(HString S)
+{
+    if(S.ch == nullptr)
+    {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+//字符串的比较,S>T返回1，S<T返回-1；S=T返回0
+int StrCompare(HString S, HString T)
+{
+    // 先比较长度
+    if(S.length > T.length)
+    {
+        return 1;
+    }
+    else if (S.length < T.length) 
+    {
+        return -1;
+    }
+    
+    // 长度相同，逐字符比较
+    for(int i = 0; i < S.length; i++) 
+    {
+        if(S.ch[i] > T.ch[i])
+        {
+            return 1;
+        }
+        else if(S.ch[i] < T.ch[i])
+        {
+            return -1;
+        }
+        // 字符相等，继续比较下一个
+    }
+    
+    // 所有字符都相等
+    return 0;
+}
+//求子串，用Sub返回串S从第pos个字符起长度为len的子串
+bool SubString(HString &Sub, HString S, int pos, int len)
+{
+    // 参数合法性检查
+    if (S.ch == nullptr || pos < 1 || len < 0 || pos + len - 1 > S.length)
+    {
+        return false;
+    }
+    
+    if (Sub.ch != nullptr)
+    {
+        delete[] Sub.ch;
+        Sub.ch = nullptr;
+    }
+    
+    Sub.ch = new char[len + 1];  // +1 用于存储结束符
+    if (Sub.ch == nullptr)
+    {
+        return false;
+    }
+    Sub.length = len;
+
+    for (int i = 0; i < len; i++)
+    {
+        Sub.ch[i] = S.ch[pos - 1 + i];
+    }
+
+    return true;
 }
