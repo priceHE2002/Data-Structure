@@ -3,7 +3,7 @@
 
 const int MaxLen = 255;
 
-
+ 
 struct HString{
     char *ch;
     int length;
@@ -93,7 +93,7 @@ int StrCompare(HString S, HString T)
     {
         return -1;
     }
-    
+      
     // 长度相同，逐字符比较
     for(int i = 0; i < S.length; i++) 
     {
@@ -139,4 +139,30 @@ bool SubString(HString &Sub, HString S, int pos, int len)
     }
 
     return true;
+}
+//定位操作。若主串S中存在与串T值相同的子串，则返回它在主串S中的第一次出现的位置；否则函数值返回0
+int Index(HString S, HString T)
+{   
+    //参数合法性检查
+    if (S.ch == nullptr || T.ch ==nullptr || S.length < T.length || T.length < 1)
+    {
+        return 0;
+    }
+
+    for(int i = 0; i <= S.length - T.length; i++)
+    {
+        if(S.ch[i] == T.ch[0])
+        {
+            int j = 0;
+            while(j < T.length && S.ch[i+j] == T.ch[j])
+            {
+                j++;
+            }
+            if(j == T.length)
+            {
+                return i + 1;
+            }
+        }
+    }
+    return 0;
 }
