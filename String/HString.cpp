@@ -228,6 +228,32 @@ int Index_3(HString S, HString T)
 
     return 0;
 }
+/*与王道书中的kmp算法不一致
+该版本字符串中存储元素的下标是从0开始（王道是从1开始）
+next数组中存储数据的下标也是从0开始（王道是从1开始）
+
+王道版kmp：
+int KMP(HString S, HString T, int next[])
+{
+    int i = 1, j = 1;
+    while(i <= S.length && j <= T.length)
+    {
+        if(S.ch[i] == T.ch[j] || j == 0)
+        {
+            i++;
+            j++;
+        }
+        else 
+        {
+            j = next[j];
+        }
+    }
+    if(j > T.length)
+        return i -T.length
+    else
+        return 0;
+}
+*/
 
 int KMP_Index(HString S, HString T,int next[])
 {
