@@ -45,7 +45,7 @@ bool StrAssign(HString &S, char T[], int tLength)
      S.ch[tLength] = '\0';
      return true;
 }
-
+ 
 HString StrCopy(HString &S)
 {
     HString T;
@@ -54,7 +54,7 @@ HString StrCopy(HString &S)
         T.ch = nullptr;
         T.length = 0;
         return T;
-    }
+    } 
     if(S.ch == nullptr || S.length < 0)
     {
         T.ch[0] = '\0';
@@ -214,29 +214,51 @@ int Index_3(HString S, HString T)
             if(StrCompare(sub, T) == 0)
             {
                 // 释放内存
-                if (sub.ch != nullptr)
-                {
-                    delete[] sub.ch;
-                    sub.ch = nullptr;
-                }
+                DestroyHString(sub);
                 return i;
             }
             // 释放每次获取的子串内存
-            if (sub.ch != nullptr)
-            {
-                delete[] sub.ch;
-                sub.ch = nullptr;
-            }
+            DestroyHString(sub);
         }
         ++i;
     }
 
     // 释放内存
-    if (sub.ch != nullptr)
-    {
-        delete[] sub.ch;
-        sub.ch = nullptr;
-    }
+    DestroyHString(sub);
 
     return 0;
 }
+
+int KMP_Index(HString S, HString T,int next[])
+{
+    //参数合法性检查
+    if (S.ch == nullptr || T.ch == nullptr || S.length < T.length || T.length < 1)
+    {
+        return 0;
+    }
+    int i = 0, j = 0;
+    while (i < S.length && j < T.length)
+    {
+        if(S.ch[i] == T.ch[j])
+        {
+            i++;
+            j++;
+        }
+        else if(j > 0)
+        {
+            j = next[j];
+        }
+        else 
+        {
+            i++;
+        }
+    }
+    if(j >= T.length)
+    {
+        return i - T.length + 1;
+    }
+    else
+    {
+        return 0;
+    }
+} 
