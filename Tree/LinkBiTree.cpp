@@ -87,28 +87,75 @@ bool InsertNewNode(BiTNode *parent, int data, char child)
 
     return false;
 }
+//访问某个结点，该结点不为空则打印该结点的value
+void visit(BiTNode *p)
+{
+    if(p == nullptr)
+    {
+        return;
+    }
+    cout<<p->value<<" ";
+}
+
+//先序遍历
+void PreOrder(BiTree T)
+{
+    if(T != nullptr)
+    {
+        visit(T);
+        PreOrder(T->leftChild);
+        PreOrder(T->rightChild);
+    }
+}
+
+//中序遍历
+void InOrder(BiTree T)
+{
+    if(T != nullptr)
+    {
+        InOrder(T->leftChild);
+        visit(T);
+        InOrder(T->rightChild);
+    }
+}
+
+//后序遍历
+void PostOrder(BiTree T)
+{
+    if(T != nullptr)
+    {
+        PostOrder(T->leftChild);
+        PostOrder(T->rightChild);
+        visit(T);
+    }
+}
 
 int main()
 {
     BiTree root;
-    InitBiTree(root, 0);
+    InitBiTree(root, 1);
     
-    // 插入左孩子
-    if(InsertNewNode(root, 10, 'l'))
-    {
-        cout << "左孩子插入成功" << endl;
-    }
+    // 构建二叉树
+    InsertNewNode(root, 2, 'l');  // 左孩子
+    InsertNewNode(root, 3, 'r');  // 右孩子
+    InsertNewNode(root->leftChild, 4, 'l');  // 2 的左孩子
+    InsertNewNode(root->leftChild, 5, 'r');  // 2 的右孩子
+    InsertNewNode(root->rightChild, 6, 'r'); // 3 的右孩子
     
-    // 插入右孩子
-    if(InsertNewNode(root, 20, 'r'))
-    {
-        cout << "右孩子插入成功" << endl;
-    }
+    // 先序遍历
+    cout << "先序遍历: ";
+    PreOrder(root);
+    cout << endl;
     
-    // 验证
-    cout << "根结点值: " << root->value << endl;
-    cout << "左孩子值: " << root->leftChild->value << endl;
-    cout << "右孩子值: " << root->rightChild->value << endl;
-    
+    // 中序遍历
+    cout << "中序遍历: ";
+    InOrder(root);
+    cout << endl;
+
+    // 后序遍历
+    cout << "后序遍历: ";
+    PostOrder(root);
+    cout << endl;
+
     return 0;
 }
