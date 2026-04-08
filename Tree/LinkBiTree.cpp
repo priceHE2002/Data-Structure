@@ -1,4 +1,3 @@
-#include <cstddef>
 #include<iostream>
 using namespace std;
 
@@ -7,8 +6,8 @@ typedef struct BiTNode{
     BiTNode *leftChild, *rightChild;
 }BiTNode, *BiTree;
 
-//初始化二叉树
-bool InitBiTree(BiTree &root)
+//初始化二叉树，将根结点的值设置为data
+bool InitBiTree(BiTree &root, int data)
 {
     root = new BiTNode;
     if (root == nullptr)
@@ -18,7 +17,7 @@ bool InitBiTree(BiTree &root)
     }
     root->leftChild = nullptr;
     root->rightChild = nullptr;
-    root->value = 0;
+    root->value = data;
     return true;
 }
 
@@ -92,7 +91,7 @@ bool InsertNewNode(BiTNode *parent, int data, char child)
 int main()
 {
     BiTree root;
-    InitBiTree(root);
+    InitBiTree(root, 0);
     
     // 插入左孩子
     if(InsertNewNode(root, 10, 'l'))
