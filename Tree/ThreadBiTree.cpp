@@ -11,7 +11,10 @@ typedef struct ThreadNode
     int ltag, rtag;
 }ThreadNode, *ThreadBiTree;
 
-//初始化线索二叉树，根结点的数据为data
+// 全局变量 pre，记录前驱结点
+ThreadNode *pre = nullptr;
+
+//初始化线索二叉树，根结点的数据为 data
 bool InitThreadBiTree(ThreadBiTree &root, int data)
 {
     root = new ThreadNode;
@@ -98,18 +101,89 @@ bool InsertNewNode(ThreadNode *parent, int data, char child)
 
     return false;
 }
-//访问某个结点，该结点不为空则打印该结点的value
-void visit(ThreadNode *p)
+
+//访问某个结点，建立线索
+void visit(ThreadNode *q)
 {
-    if(p == nullptr)
+    //左子树为空，建立前驱线索
+    if(q->leftChild == nullptr)
     {
-        return;
+        q->leftChild = pre;
+        q->ltag = 1;
     }
-    cout<<p->data<<" ";
+    //前驱结点的右子树为空，建立前驱结点的后继线索
+    if(pre != nullptr && pre->rightChild == nullptr)
+    {
+        pre->rightChild = q;
+        pre->rtag = 1;
+    }
+    pre = q;
 }
 
 //构造中序线索二叉树
 void InThread(ThreadBiTree &T)
 {
+    if(T != nullptr)
+    {
+        InThread(T->leftChild);
+        visit(T);
+        InThread(T->rightChild);
+    }
+}
+
+// 中序遍历线索二叉树（从头结点开始）
+void InOrderThread(ThreadBiTree T)
+{
+    ThreadNode *p = T;
     
+    // 找到最左下的结点（第一个结点）
+    while(p->leftChild != nullptr && p->ltag == 0)
+    {
+        p = p->leftChild;
+    }
+    
+    // 遍历所有结点
+    while(p != nullptr)
+    {
+        cout << p->data << " ";
+        
+        // 如果右子树是线索，直接访问后继
+        if(p->rtag == 1)
+        {
+            p = p->rightChild;
+        }
+        else
+        {
+            // 否则从右子树的最左下结点开始
+            p = p->rightChild;
+            while(p != nullptr && p->ltag == 0)
+            {
+                p = p->leftChild;
+            }
+        }
+    }
+}
+
+int main()
+{
+    ThreadBiTree root;
+    InitThreadBiTree(root, 1);
+    
+    // 构建二叉树
+    InsertNewNode(root, 2, 'l');
+    InsertNewNode(root, 3, 'r');
+    InsertNewNode(root->leftChild, 4, 'l');
+    InsertNewNode(root->leftChild, 5, 'r');
+    InsertNewNode(root->rightChild, 6, 'r');
+    
+    // 线索化
+    pre = nullptr;  // 重置 pre
+    InThread(root);
+    
+    // 中序遍历线索二叉树
+    cout << "中序线索化后遍历: ";
+    InOrderThread(root);
+    cout << endl;
+    
+    return 0;
 }
