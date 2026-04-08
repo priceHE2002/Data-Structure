@@ -1,4 +1,4 @@
-#include <iostream>
+#include<iostream>
 
 const int MaxLen = 255;
 
