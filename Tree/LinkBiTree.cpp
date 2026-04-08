@@ -232,7 +232,7 @@ void levelOrder(BiTree T)
 {
     LinkQueue Q;
     InitLinkQueue(Q);
-    BiTree p;
+    BiTNode *p;
     enLinkQueue(Q, T);
     while(!IsLinkQueueEmpty(Q))
     {
@@ -277,6 +277,7 @@ int main()
     PostOrder(root);
     cout << endl;
 
+    //层序遍历
     cout << "层序遍历: ";
     levelOrder(root);
     cout << endl;
