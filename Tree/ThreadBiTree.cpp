@@ -105,13 +105,13 @@ bool InsertNewNode(ThreadNode *parent, int data, char child)
 //访问某个结点，建立线索
 void visit(ThreadNode *q)
 {
-    //左子树为空，建立前驱线索
+    //该结点的左子树为空，建立前驱线索
     if(q->leftChild == nullptr)
     {
         q->leftChild = pre;
         q->ltag = 1;
     }
-    //前驱结点的右子树为空，建立前驱结点的后继线索
+    //该结点的前驱线索结点的右子树为空，建立前驱线索结点的后继线索
     if(pre != nullptr && pre->rightChild == nullptr)
     {
         pre->rightChild = q;
@@ -120,7 +120,7 @@ void visit(ThreadNode *q)
     pre = q;
 }
 
-//构造中序线索二叉树
+//中序遍历二叉树，一边遍历一边线索化
 void InThread(ThreadBiTree &T)
 {
     if(T != nullptr)
@@ -131,7 +131,21 @@ void InThread(ThreadBiTree &T)
     }
 }
 
-// 中序遍历线索二叉树（从头结点开始）
+//中序线索化二叉树T
+void CreateInThread(ThreadBiTree &T)
+{
+    pre = nullptr;  // 重置 pre
+    InThread(T);
+    
+    // 处理最后一个结点的右线索
+    if(pre != nullptr && pre->rightChild == nullptr)
+    {
+        pre->rtag = 1;
+        // pre->rightChild 保持为 nullptr，表示没有后继
+    }
+}
+
+// 遍历中序线索二叉树（从头结点开始）
 void InOrderThread(ThreadBiTree T)
 {
     ThreadNode *p = T;
@@ -164,6 +178,39 @@ void InOrderThread(ThreadBiTree T)
     }
 }
 
+//先序遍历二叉树，一边遍历一边线索化
+void PreThread(ThreadBiTree &T)
+{
+    if(T != nullptr)
+    {
+        visit(T);
+        // 只有当左子树不是线索时才递归
+        if(T->ltag == 0)
+        {
+            PreThread(T->leftChild);
+        } 
+
+        if(T->rtag == 0)
+        {
+            PreThread(T->rightChild);
+        }
+
+    }
+}
+
+//先序线索化二叉树T
+void CreatePreThread(ThreadBiTree &T)
+{
+    pre = nullptr;  // 重置 pre
+    PreThread(T);
+    // 处理最后一个结点的右线索
+    if(pre != nullptr && pre->rightChild == nullptr)
+    {
+        pre->rtag = 1;
+        // pre->rightChild 保持为 nullptr，表示没有后继
+    }
+}
+
 int main()
 {
     ThreadBiTree root;
@@ -177,8 +224,7 @@ int main()
     InsertNewNode(root->rightChild, 6, 'r');
     
     // 线索化
-    pre = nullptr;  // 重置 pre
-    InThread(root);
+    CreateInThread(root);
     
     // 中序遍历线索二叉树
     cout << "中序线索化后遍历: ";
