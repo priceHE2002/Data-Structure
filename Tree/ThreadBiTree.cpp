@@ -145,37 +145,56 @@ void CreateInThread(ThreadBiTree &T)
     }
 }
 
-// 遍历中序线索二叉树（从头结点开始）
+// 找到以 P 为根的子树中，第一个被中序遍历的结点
+ThreadNode *FirstNode(ThreadNode *P)
+{
+    if(P == nullptr) return nullptr;  // 空指针检查
+    
+    //循环找到最左下角的结点
+    while(P->ltag == 0)
+    {
+        P=P->leftChild;
+    }
+    return P;
+}
+
+//在中序线索二叉树中找到中序遍历的后继结点
+ThreadNode *NextNode(ThreadNode *P)
+{
+    if(P == nullptr) return nullptr;  // 空指针检查
+    
+    //右子树中最左下角的结点
+    if(P->rtag == 0)
+    {
+        return FirstNode(P->rightChild);
+    }
+    //如果 P->rtag == 1，直接返回后继线索
+    else {
+        return P->rightChild;
+    }
+}
+
+//对中序线索二叉树进行中序遍历
 void InOrderThread(ThreadBiTree T)
 {
-    ThreadNode *p = T;
+    if(T == nullptr) return;  // 空树检查
     
-    // 找到最左下的结点（第一个结点）
-    while(p->leftChild != nullptr && p->ltag == 0)
+    for(ThreadNode *p = FirstNode(T); p != nullptr; p = NextNode(p) )
     {
-        p = p->leftChild;
+        cout << p->data << " ";  // 直接打印，不使用 visit（visit 会修改线索）
     }
-    
-    // 遍历所有结点
-    while(p != nullptr)
+}
+
+// 找到以 P 为根的子树中，最后一个被中序遍历的结点
+ThreadNode *LastNode(ThreadNode *P)
+{
+    if(P == nullptr) return nullptr;  // 空指针检查
+    //循环找到最右下角的结点
+    while(P->rtag == 0)
     {
-        cout << p->data << " ";
-        
-        // 如果右子树是线索，直接访问后继
-        if(p->rtag == 1)
-        {
-            p = p->rightChild;
-        }
-        else
-        {
-            // 否则从右子树的最左下结点开始
-            p = p->rightChild;
-            while(p != nullptr && p->ltag == 0)
-            {
-                p = p->leftChild;
-            }
-        }
+        P=P->rightChild;
     }
+    return P;
 }
 
 //先序遍历二叉树，一边遍历一边线索化
@@ -203,6 +222,30 @@ void CreatePreThread(ThreadBiTree &T)
 {
     pre = nullptr;  // 重置 pre
     PreThread(T);
+    // 处理最后一个结点的右线索
+    if(pre != nullptr && pre->rightChild == nullptr)
+    {
+        pre->rtag = 1;
+        // pre->rightChild 保持为 nullptr，表示没有后继
+    }
+}
+
+//后序遍历二叉树，一边遍历一边线索化
+void PostThread(ThreadBiTree &T)
+{
+    if(T != nullptr)
+    {
+        PostThread(T->leftChild);
+        PostThread(T->rightChild);
+        visit(T);
+    }
+}
+
+//后序线索化二叉树T
+void CreatePostThread(ThreadBiTree &T)
+{
+    pre = nullptr;  // 重置 pre
+    PostThread(T);
     // 处理最后一个结点的右线索
     if(pre != nullptr && pre->rightChild == nullptr)
     {
