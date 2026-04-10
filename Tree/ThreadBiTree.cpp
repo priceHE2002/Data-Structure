@@ -197,6 +197,32 @@ ThreadNode *LastNode(ThreadNode *P)
     return P;
 }
 
+//在中序线索二叉树中找到结点P的前驱结点
+ThreadNode *PreNode(ThreadNode *P)
+{
+    //左子树最右下角的结点
+    if(P->ltag == 0)
+    {
+        return LastNode(P->leftChild);
+    }
+    //ltag = 1时直接返回P的前驱结点
+    else 
+    {
+        return P->leftChild;
+    }
+}
+
+//对中序线索二叉树进行逆序的中序遍历
+void RevInOrderThread(ThreadBiTree T)
+{
+    if(T == nullptr) return;  // 空树检查
+    
+    for(ThreadNode *p = LastNode(T); p != nullptr; p = PreNode(p) )
+    {
+        cout << p->data << " ";  // 直接打印，不使用 visit（visit 会修改线索）
+    }
+}
+
 //先序遍历二叉树，一边遍历一边线索化
 void PreThread(ThreadBiTree &T)
 {
@@ -230,6 +256,44 @@ void CreatePreThread(ThreadBiTree &T)
     }
 }
 
+//先序线索二叉树找先序后继
+ThreadNode *PreOrderNextNode(ThreadNode *P)
+{
+    if(P == nullptr) return nullptr;  // 空指针检查
+    
+    //若rtag == 1，直接返回右孩子结点
+    if(P->rtag == 1)
+    {
+        return P->rightChild;
+    }
+    //如果 P->rtag == 0，若P有左孩子，则先序后继为左孩子；若无左孩子，则先序后继为右孩子
+    else
+    {
+        if(P->ltag == 0)
+        {
+            return P->leftChild;
+        }
+        else
+        {
+            return P->rightChild;
+        }
+    }
+}
+
+//对先序线索二叉树进行先序遍历
+void PreOrderThread(ThreadBiTree T)
+{
+    //空树检查
+    if (T == nullptr)
+    {
+        return;
+    }
+    for(ThreadNode *P = T; P != nullptr; P = PreOrderNextNode(P))
+    {
+        cout<<P->data<<" ";
+    }
+}
+
 //后序遍历二叉树，一边遍历一边线索化
 void PostThread(ThreadBiTree &T)
 {
@@ -240,6 +304,7 @@ void PostThread(ThreadBiTree &T)
         visit(T);
     }
 }
+
 
 //后序线索化二叉树T
 void CreatePostThread(ThreadBiTree &T)
@@ -254,8 +319,49 @@ void CreatePostThread(ThreadBiTree &T)
     }
 }
 
-int main()
+// 测试用例 1：测试中序线索化
+void testInThread()
 {
+    cout << "\n========== 测试 1：中序线索化 ==========\n" << endl;
+    
+    ThreadBiTree root;
+    InitThreadBiTree(root, 1);
+    
+    // 构建二叉树
+    //       1
+    //      / \
+    //     2   3
+    //    / \   \
+    //   4   5   6
+    InsertNewNode(root, 2, 'l');
+    InsertNewNode(root, 3, 'r');
+    InsertNewNode(root->leftChild, 4, 'l');
+    InsertNewNode(root->leftChild, 5, 'r');
+    InsertNewNode(root->rightChild, 6, 'r');
+    
+    // 中序线索化
+    CreateInThread(root);
+    
+    // 中序遍历（正序）
+    cout << "中序遍历（正序）: ";
+    InOrderThread(root);
+    cout << endl;
+    
+    // 中序遍历（逆序）
+    cout << "中序遍历（逆序）: ";
+    RevInOrderThread(root);
+    cout << endl;
+    
+    cout << "\n预期结果：" << endl;
+    cout << "正序：4 2 5 1 3 6" << endl;
+    cout << "逆序：6 3 1 5 2 4" << endl;
+}
+
+// 测试用例 2：测试先序线索化
+void testPreThread()
+{
+    cout << "\n========== 测试 2：先序线索化 ==========\n" << endl;
+    
     ThreadBiTree root;
     InitThreadBiTree(root, 1);
     
@@ -266,13 +372,241 @@ int main()
     InsertNewNode(root->leftChild, 5, 'r');
     InsertNewNode(root->rightChild, 6, 'r');
     
-    // 线索化
+    // 先序线索化
+    CreatePreThread(root);
+    
+    // 先序遍历
+    cout << "先序遍历：";
+    PreOrderThread(root);
+    cout << endl;
+    
+    cout << "\n预期结果：1 2 4 5 3 6" << endl;
+}
+
+// 测试用例 3：测试后序线索化
+void testPostThread()
+{
+    cout << "\n========== 测试 3：后序线索化 ==========\n" << endl;
+    
+    ThreadBiTree root;
+    InitThreadBiTree(root, 1);
+    
+    // 构建二叉树
+    InsertNewNode(root, 2, 'l');
+    InsertNewNode(root, 3, 'r');
+    InsertNewNode(root->leftChild, 4, 'l');
+    InsertNewNode(root->leftChild, 5, 'r');
+    InsertNewNode(root->rightChild, 6, 'r');
+    
+    // 后序线索化
+    CreatePostThread(root);
+    
+    cout << "后序线索化完成（后序遍历较复杂，建议手动验证线索）" << endl;
+    cout << "预期后序序列：4 5 2 6 3 1" << endl;
+}
+
+// 测试用例 4：测试空树
+void testEmptyTree()
+{
+    cout << "\n========== 测试 4：空树测试 ==========\n" << endl;
+    
+    ThreadBiTree emptyTree = nullptr;
+    
+    cout << "中序遍历空树：";
+    InOrderThread(emptyTree);
+    cout << " (空)" << endl;
+    
+    cout << "逆序遍历空树：";
+    RevInOrderThread(emptyTree);
+    cout << " (空)" << endl;
+    
+    cout << "先序遍历空树：";
+    PreOrderThread(emptyTree);
+    cout << " (空)" << endl;
+}
+
+// 测试用例 5：测试只有根结点
+void testOnlyRoot()
+{
+    cout << "\n========== 测试 5：只有根结点 ==========\n" << endl;
+    
+    ThreadBiTree root;
+    InitThreadBiTree(root, 10);
+    
+    // 中序线索化
     CreateInThread(root);
     
-    // 中序遍历线索二叉树
-    cout << "中序线索化后遍历: ";
+    cout << "中序遍历（只有根结点）: ";
     InOrderThread(root);
     cout << endl;
+    
+    // 先序线索化
+    CreatePreThread(root);
+    
+    cout << "先序遍历（只有根结点）: ";
+    PreOrderThread(root);
+    cout << endl;
+    
+    cout << "\n预期结果：10" << endl;
+}
+
+// 测试用例 6：测试左斜树
+void testLeftSkewedTree()
+{
+    cout << "\n========== 测试 6：左斜树 ==========\n" << endl;
+    
+    ThreadBiTree root;
+    InitThreadBiTree(root, 1);
+    
+    // 构建左斜树
+    //   1
+    //  /
+    // 2
+    // /
+    // 3
+    InsertNewNode(root, 2, 'l');
+    InsertNewNode(root->leftChild, 3, 'l');
+    
+    // 中序线索化
+    CreateInThread(root);
+    
+    cout << "中序遍历（左斜树）: ";
+    InOrderThread(root);
+    cout << endl;
+    
+    cout << "逆序遍历（左斜树）: ";
+    RevInOrderThread(root);
+    cout << endl;
+    
+    cout << "\n预期结果：" << endl;
+    cout << "正序：3 2 1" << endl;
+    cout << "逆序：1 2 3" << endl;
+}
+
+// 测试用例 7：测试右斜树
+void testRightSkewedTree()
+{
+    cout << "\n========== 测试 7：右斜树 ==========\n" << endl;
+    
+    ThreadBiTree root;
+    InitThreadBiTree(root, 1);
+    
+    // 构建右斜树
+    // 1
+    //  \
+    //   2
+    //    \
+    //     3
+    InsertNewNode(root, 2, 'r');
+    InsertNewNode(root->rightChild, 3, 'r');
+    
+    // 中序线索化
+    CreateInThread(root);
+    
+    cout << "中序遍历（右斜树）: ";
+    InOrderThread(root);
+    cout << endl;
+    
+    cout << "逆序遍历（右斜树）: ";
+    RevInOrderThread(root);
+    cout << endl;
+    
+    cout << "\n预期结果：" << endl;
+    cout << "正序：1 2 3" << endl;
+    cout << "逆序：3 2 1" << endl;
+}
+
+// 测试用例 8：测试 FirstNode 和 LastNode
+void testFirstAndLastNode()
+{
+    cout << "\n========== 测试 8：FirstNode 和 LastNode ==========\n" << endl;
+    
+    ThreadBiTree root;
+    InitThreadBiTree(root, 1);
+    InsertNewNode(root, 2, 'l');
+    InsertNewNode(root, 3, 'r');
+    InsertNewNode(root->leftChild, 4, 'l');
+    InsertNewNode(root->leftChild, 5, 'r');
+    InsertNewNode(root->rightChild, 6, 'r');
+    
+    CreateInThread(root);
+    
+    ThreadNode *first = FirstNode(root);
+    ThreadNode *last = LastNode(root);
+    
+    cout << "第一个结点：" << (first ? first->data : -1) << endl;
+    cout << "最后一个结点：" << (last ? last->data : -1) << endl;
+    
+    cout << "\n预期结果：" << endl;
+    cout << "第一个结点：4" << endl;
+    cout << "最后一个结点：6" << endl;
+}
+
+// 测试用例 9：测试 NextNode 和 PreNode
+void testNextAndPreNode()
+{
+    cout << "\n========== 测试 9：NextNode 和 PreNode ==========\n" << endl;
+    
+    ThreadBiTree root;
+    InitThreadBiTree(root, 1);
+    InsertNewNode(root, 2, 'l');
+    InsertNewNode(root, 3, 'r');
+    InsertNewNode(root->leftChild, 4, 'l');
+    InsertNewNode(root->leftChild, 5, 'r');
+    InsertNewNode(root->rightChild, 6, 'r');
+    
+    CreateInThread(root);
+    
+    // 找到结点 2
+    ThreadNode *node2 = root->leftChild;
+    
+    ThreadNode *next = NextNode(node2);
+    ThreadNode *pre = PreNode(node2);
+    
+    cout << "结点 2 的后继：" << (next ? next->data : -1) << endl;
+    cout << "结点 2 的前驱：" << (pre ? pre->data : -1) << endl;
+    
+    cout << "\n预期结果：" << endl;
+    cout << "结点 2 的后继：5" << endl;
+    cout << "结点 2 的前驱：4" << endl;
+}
+
+int main()
+{
+    cout << "========================================" << endl;
+    cout << "     线索二叉树完整测试" << endl;
+    cout << "========================================" << endl;
+    
+    // 测试中序线索化
+    testInThread();
+    
+    // 测试先序线索化
+    testPreThread();
+    
+    // 测试后序线索化
+    testPostThread();
+    
+    // 测试空树
+    testEmptyTree();
+    
+    // 测试只有根结点
+    testOnlyRoot();
+    
+    // 测试左斜树
+    testLeftSkewedTree();
+    
+    // 测试右斜树
+    testRightSkewedTree();
+    
+    // 测试 FirstNode 和 LastNode
+    testFirstAndLastNode();
+    
+    // 测试 NextNode 和 PreNode
+    testNextAndPreNode();
+    
+    cout << "\n========================================" << endl;
+    cout << "     所有测试完成！" << endl;
+    cout << "========================================" << endl;
     
     return 0;
 }
