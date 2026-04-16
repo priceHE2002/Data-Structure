@@ -319,6 +319,47 @@ void CreatePostThread(ThreadBiTree &T)
     }
 }
 
+//后序线索二叉树找后序前驱
+ThreadNode *PostOrderPreNode(ThreadNode *P)
+{
+    if(P == nullptr)
+    {
+        return nullptr;
+    }  // 空指针检查
+
+    //若ltag == 1，直接返回左孩子结点
+    if(P->ltag == 1)
+    {
+        return P->leftChild;
+    }
+    //如果 P->rtag == 0，若P有右孩子，则后序前驱为右孩子；若无右孩子，则后序前驱为左孩子
+    else
+    {
+        if(P->rtag == 0)
+        {
+            return P->rightChild;
+        }
+        else
+        {
+            return P->leftChild;
+        }
+    }
+}
+
+//对后序线索二叉树进行逆向后序遍历
+void RevPostOrderThread(ThreadBiTree T)
+{
+    //空树检查
+    if(T == nullptr)
+    {
+        return;
+    }
+    for(ThreadNode *P = T; P != nullptr; P=PostOrderPreNode(P))
+    {
+        cout << P->data <<" ";
+    }
+}
+
 // 测试用例 1：测试中序线索化
 void testInThread()
 {
