@@ -23,6 +23,23 @@ int Find(int S[], int x)
     return x;
 }
 
+//先查找到根结点，再压缩路径
+int FindPro(int S[], int x)
+{
+    int root = x;
+    while(S[root] >= 0)//循环找到根
+    {
+        root = S[root];
+    }
+    while(x != root)//压缩路径
+    {
+        int t = S[x];
+        S[x] = root;
+        x = t;
+    }
+    return root;
+}
+
 //合并两个不相交的子集合的操作。当要合并两个元素所在的集合时，
 //需要先找到这两个元素的根，然后让一棵子树的根指向另一棵子集树的根
 void Union1(int S[], int root1, int root2)
@@ -34,6 +51,7 @@ void Union1(int S[], int root1, int root2)
     S[root2] = root1;
 }
 
+//小树合并到大树中
 void Union2(int S[], int root1, int root2)
 {
     if(root1 == root2)
