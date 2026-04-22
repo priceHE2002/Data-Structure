@@ -2,12 +2,26 @@
 using namespace std;
 #define MaxVertexNum 100//顶点数目最大值
 
-//无向图
+//无向无权图
 struct MGraph{
     char Vex[MaxVertexNum]; //顶点表
     bool Edge[MaxVertexNum][MaxVertexNum]; //邻接矩阵，边表
     int vexnum, edgenum; //顶点数，边数（弧数）
 };
+
+//初始化
+void InitMGraph(MGraph &G) 
+{
+    G.vexnum = 0;
+    G.edgenum = 0;
+
+    // 遍历矩阵，将所有可能的边初始化为 0（代表无边）
+    for (int i = 0; i < MaxVertexNum; i++) {
+        for (int j = 0; j < MaxVertexNum; j++) {
+            G.Edge[i][j] = false; 
+        }
+    }
+}
 
 //判断图G是否存在边(x , y)
 bool Adjacent(MGraph &G, int x, int y) 
@@ -35,7 +49,8 @@ void Neighbors(MGraph &G, int x)
 }
 
 //在图G中插入边(x , y)
-void InsertEdge(MGraph &G, int x,int y)
+//在图G中插入边(x , y)
+void InsertEdge(MGraph &G, int x, int y)
 {
     if(x < 0 || x >= G.vexnum || y < 0 || y >= G.vexnum)
     {
@@ -43,33 +58,38 @@ void InsertEdge(MGraph &G, int x,int y)
         return;
     }
 
-    //无向图，邻接矩阵为对称矩阵
-    G.Edge[x][y] = true;
-    G.Edge[y][x] = true;
-    G.edgenum++;
+    // 优化：检查边是否已经存在，避免重复增加边数
+    if (!G.Edge[x][y]) 
+    {
+        G.Edge[x][y] = true;
+        G.Edge[y][x] = true;
+        G.edgenum++;
+    }
+}
+
+//在图G中插入顶点X
+void InsertVertex(MGraph &G, char X) 
+{
+    //检查空间是否已满
+    if (G.vexnum >= MaxVertexNum) {
+        return; 
+    }
+    //插入顶点信息
+    G.Vex[G.vexnum] = X;
+    //顶点数加 1
+    G.vexnum++;
 }
 
 int main()
 {
     MGraph G;
-    
     // 初始化图
-    G.vexnum = 4;
-    G.edgenum = 0;
-    G.Vex[0] = 'A';
-    G.Vex[1] = 'B';
-    G.Vex[2] = 'C';
-    G.Vex[3] = 'D';
-    
-    // 初始化邻接矩阵为 false
-    for(int i = 0; i < G.vexnum; i++)
-    {
-        for(int j = 0; j < G.vexnum; j++)
-        {
-            G.Edge[i][j] = false;
-        }
-    }
-    
+    InitMGraph(G);
+    //插入顶点
+    InsertVertex(G, 'A') ;
+    InsertVertex(G, 'B') ;
+    InsertVertex(G, 'C') ;
+    InsertVertex(G, 'D') ;
     // 插入边
     InsertEdge(G, 0, 1); // A-B
     InsertEdge(G, 0, 2); // A-C
