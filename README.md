@@ -2,6 +2,8 @@
 
 本项目是基于 C++ 实现的数据结构与算法学习仓库，涵盖了线性表、栈与队列、树、图、排序算法等核心内容。适合数据结构与算法课程学习、考研复习以及面试准备。
 
+每个 `.cpp` 文件都是**独立可编译运行**的完整程序，包含数据结构定义、基本操作实现和测试用的 `main` 函数。
+
 ---
 
 ## 📚 目录结构
@@ -9,41 +11,39 @@
 ```
 Data-Structure/
 ├── 0-LinarList/          # 线性表
-│   ├── LinkList/           # 链表
+│   ├── LinkList/
 │   │   ├── LinkListWithHead.cpp      # 带头结点的单链表
 │   │   ├── LinkListWithoutHead.cpp   # 不带头结点的单链表
 │   │   ├── DoubleLinkList.cpp        # 双链表
 │   │   ├── CLinkList.cpp             # 循环链表
 │   │   └── StaticLinkList.cpp        # 静态链表
-│   └── SeqList/            # 顺序表
-│       ├── SeqList.cpp
-│       └── SeqList.h
+│   └── SeqList/
+│       └── SeqList.cpp               # 顺序表
 ├── 1-Stack/              # 栈
+│   ├── LinkStack/
+│   │   └── LinkStack.cpp             # 链栈
 │   ├── SeqStack/
 │   │   └── SqStack.cpp               # 顺序栈
-│   ├── LinkStack/
-│   │   ├── LinkStack.cpp             # 链栈
-│   │   └── main.cpp
 │   └── bracketCheck/
 │       ├── bracketCheck.cpp          # 括号匹配
 │       └── InfixToPostfix.cpp        # 中缀转后缀表达式
-├── 2-Queue/                # 队列
-│   ├── SqQueue/
-│   │   ├── SqQueue1.cpp              # 顺序队列
-│   │   └── SqQueue2.cpp              # 循环队列
-│   └── LinkQueue/
-│       └── LinkQueue.cpp             # 链队列
-├── 3-String/               # 字符串
+├── 2-Queue/              # 队列
+│   ├── LinkQueue/
+│   │   └── LinkQueue.cpp             # 链队列
+│   └── SqQueue/
+│       ├── SqQueue1.cpp              # 顺序队列
+│       └── SqQueue2.cpp              # 循环队列
+├── 3-String/             # 字符串
 │   └── HString.cpp                   # 堆分配存储的串（含 KMP 算法）
-├── 4-Tree/                 # 树与二叉树
+├── 4-Tree/               # 树与二叉树
 │   ├── SqBinaryTree.cpp              # 顺序存储二叉树
 │   ├── LinkBiTree.cpp                # 链式存储二叉树
 │   ├── ThreadBiTree.cpp              # 线索二叉树（中序、先序、后序）
 │   └── DisjointSet.cpp               # 并查集
-├── 5-Graph/                # 图
+├── 5-Graph/              # 图
 │   ├── MGraph.cpp                    # 邻接矩阵存储的图
 │   └── ALGraph.cpp                   # 邻接表存储的图
-└── 6-Sort_Algorithm/       # 排序算法
+└── 6-Sort_Algorithm/     # 排序算法
     ├── bubbleSort/
     │   └── BubbleSort.cpp
     ├── inserSort/
@@ -60,148 +60,138 @@ Data-Structure/
 
 ### 环境要求
 
-- **编译器**：支持 C++11 或更高版本的编译器（如 GCC、Clang、MSVC）
+- **编译器**：支持 C++11 或更高版本的编译器（如 GCC、Clang）
 - **操作系统**：Linux / macOS / Windows
 
 ### 编译运行
 
-以 `Tree/LinkBiTree.cpp` 为例：
+每个 `.cpp` 文件都是独立的，可以直接编译运行：
 
 ```bash
-# 进入对应目录
-cd Tree
+# 以顺序表为例
+cd 0-LinarList/SeqList
+g++ -std=c++11 SeqList.cpp -o SeqList
+./SeqList
 
-# 使用 g++ 编译
-g++ -std=c++11 LinkBiTree.cpp -o LinkBiTree
+# 以链栈为例
+cd ../../1-Stack/LinkStack
+g++ -std=c++11 LinkStack.cpp -o LinkStack
+./LinkStack
 
-# 运行
-./LinkBiTree
+# 以线索二叉树为例
+cd ../../4-Tree
+g++ -std=c++11 ThreadBiTree.cpp -o ThreadBiTree
+./ThreadBiTree
 ```
 
 ---
 
 ## 📖 各模块详解
 
-### 1. 线性表 (LinarList)
+### 1. 线性表 (0-LinarList)
 
-| 文件 | 说明 |
-|------|------|
-| `SeqList.cpp` | 顺序表的基本操作：插入、删除、查找 |
-| `LinkListWithHead.cpp` | 带头结点的单链表：头插法、尾插法、逆置 |
-| `LinkListWithoutHead.cpp` | 不带头结点的单链表 |
-| `DoubleLinkList.cpp` | 双链表：双向遍历、插入、删除 |
-| `CLinkList.cpp` | 循环链表：循环遍历 |
-| `StaticLinkList.cpp` | 静态链表：用数组模拟链表 |
-
-**核心操作**：
-- 初始化、插入、删除、查找
-- 头插法、尾插法建立链表
-- 链表逆置、合并
+| 文件 | 说明 | 核心操作 |
+|------|------|---------|
+| `SeqList.cpp` | 顺序表 | 初始化、插入、删除、查找、扩容 |
+| `LinkListWithHead.cpp` | 带头结点的单链表 | 头插法、尾插法、逆置、合并 |
+| `LinkListWithoutHead.cpp` | 不带头结点的单链表 | 基本插入删除 |
+| `DoubleLinkList.cpp` | 双链表 | 双向遍历、插入、删除 |
+| `CLinkList.cpp` | 循环链表 | 循环遍历 |
+| `StaticLinkList.cpp` | 静态链表 | 用数组模拟链表 |
 
 ---
 
-### 2. 栈与队列 (Stack & Queue)
+### 2. 栈与队列 (1-Stack / 2-Queue)
 
 #### 栈 (Stack)
 
-| 文件 | 说明 |
-|------|------|
-| `SqStack.cpp` | 顺序栈：基于数组实现 |
-| `LinkStack.cpp` | 链栈：基于链表实现 |
-| `bracketCheck.cpp` | 括号匹配算法 |
-| `InfixToPostfix.cpp` | 中缀表达式转后缀表达式（支持多位数） |
-
-**核心应用**：
-- 括号匹配
-- 表达式求值
-- 递归模拟
+| 文件 | 说明 | 核心应用 |
+|------|------|---------|
+| `SqStack.cpp` | 顺序栈 | 基于数组实现 |
+| `LinkStack.cpp` | 链栈 | 基于链表实现 |
+| `bracketCheck.cpp` | 括号匹配 | 栈的经典应用 |
+| `InfixToPostfix.cpp` | 中缀转后缀 | 支持多位数，栈的应用 |
 
 #### 队列 (Queue)
 
-| 文件 | 说明 |
-|------|------|
-| `SqQueue1.cpp` | 普通顺序队列 |
-| `SqQueue2.cpp` | 循环队列（解决假溢出） |
-| `LinkQueue.cpp` | 链队列 |
-
-**核心操作**：
-- 入队、出队
-- 循环队列的队空/队满判断
+| 文件 | 说明 | 核心特点 |
+|------|------|---------|
+| `SqQueue1.cpp` | 普通顺序队列 | 基础实现 |
+| `SqQueue2.cpp` | 循环队列 | 解决假溢出问题 |
+| `LinkQueue.cpp` | 链队列 | 无容量限制 |
 
 ---
 
-### 3. 字符串 (String)
+### 3. 字符串 (3-String)
 
-| 文件 | 说明 |
-|------|------|
-| `HString.cpp` | 堆分配存储的串 |
+| 文件 | 说明 | 核心算法 |
+|------|------|---------|
+| `HString.cpp` | 堆分配存储的串 | 串的比较、连接、子串提取、**KMP模式匹配** |
 
-**核心算法**：
-- 串的比较、连接、子串提取
-- **KMP 模式匹配算法**：next 数组、nextval 数组
+**KMP 算法**：包含 next 数组和 nextval 数组的计算与优化
 
 ---
 
-### 4. 树与二叉树 (Tree)
+### 4. 树与二叉树 (4-Tree)
 
-| 文件 | 说明 |
-|------|------|
-| `SqBinaryTree.cpp` | 顺序存储二叉树（数组实现） |
-| `LinkBiTree.cpp` | 链式存储二叉树：遍历、深度计算、层序遍历 |
-| `ThreadBiTree.cpp` | **线索二叉树**：中序、先序、后序线索化及遍历 |
-| `DisjointSet.cpp` | **并查集**：路径压缩、按秩合并 |
-
-**核心算法**：
-- 二叉树遍历：先序、中序、后序、层序
-- 线索二叉树：利用空指针建立前驱/后继线索
-- 并查集：集合的合并与查询（带路径压缩优化）
+| 文件 | 说明 | 核心内容 |
+|------|------|---------|
+| `SqBinaryTree.cpp` | 顺序存储二叉树 | 数组实现、父子结点计算 |
+| `LinkBiTree.cpp` | 链式存储二叉树 | 遍历、深度计算、层序遍历 |
+| `ThreadBiTree.cpp` | **线索二叉树** | 中序、先序、后序线索化及遍历 |
+| `DisjointSet.cpp` | **并查集** | 路径压缩、按秩合并 |
 
 **线索二叉树遍历函数**：
 
 ```cpp
-// 中序线索化
+// 中序线索化及遍历
 CreateInThread(root);
-InOrderThread(root);      // 正序遍历
-RevInOrderThread(root);   // 逆序遍历
+InOrderThread(root);        // 正序遍历
+RevInOrderThread(root);     // 逆序遍历
 
-// 先序线索化
+// 先序线索化及遍历
 CreatePreThread(root);
-PreOrderThread(root);     // 先序遍历
+PreOrderThread(root);       // 先序遍历
 
-// 后序线索化
+// 后序线索化及遍历
 CreatePostThread(root);
-RevPostOrderThread(root); // 逆向后序遍历
+RevPostOrderThread(root);   // 逆向后序遍历
+```
+
+**并查集核心操作**：
+
+```cpp
+Initial(S);          // 初始化
+Find(S, x);          // 查找根结点
+FindPro(S, x);       // 查找 + 路径压缩
+Union(S, root1, root2);  // 合并集合
 ```
 
 ---
 
-### 5. 图 (Graph)
+### 5. 图 (5-Graph)
 
-| 文件 | 说明 |
-|------|------|
-| `MGraph.cpp` | 邻接矩阵存储的图 |
-| `ALGraph.cpp` | 邻接表存储的图 |
+| 文件 | 说明 | 存储方式 |
+|------|------|---------|
+| `MGraph.cpp` | 邻接矩阵存储的图 | 二维数组 |
+| `ALGraph.cpp` | 邻接表存储的图 | 链表 |
 
 **核心操作**：
 - 图的创建（插入顶点、插入边）
-- 判断边是否存在
-- 查找邻接点
+- 判断边是否存在 (`Adjacent`)
+- 查找邻接点 (`Neighbors`)
 - 图的遍历（DFS、BFS）
 
 ---
 
-### 6. 排序算法 (Sort Algorithm)
+### 6. 排序算法 (6-Sort_Algorithm)
 
-| 文件 | 说明 | 时间复杂度 |
-|------|------|-----------|
-| `BubbleSort.cpp` | 冒泡排序 | O(n²) |
-| `InsertSort.cpp` | 直接插入排序 | O(n²) |
-| `SelectSort.cpp` | 简单选择排序 | O(n²) |
-
-**核心思想**：
-- 冒泡排序：相邻元素比较，大元素后移
-- 插入排序：将元素插入到已排序序列的合适位置
-- 选择排序：每次选择最小元素放到已排序序列末尾
+| 文件 | 说明 | 时间复杂度 | 稳定性 |
+|------|------|-----------|--------|
+| `BubbleSort.cpp` | 冒泡排序 | O(n²) | 稳定 |
+| `InsertSort.cpp` | 直接插入排序 | O(n²) | 稳定 |
+| `SelectSort.cpp` | 简单选择排序 | O(n²) | 不稳定 |
+| `Pointer.cpp` | 指针学习 | - | - |
 
 ---
 
@@ -217,17 +207,17 @@ RevPostOrderThread(root); // 逆向后序遍历
 
 ### 2. 动手实践
 
-- 每个数据结构都配有完整的 `main` 函数测试用例
-- 建议先阅读代码，理解原理，然后自己手写一遍
-- 尝试修改代码，添加新功能
+- 每个 `.cpp` 文件都包含完整的 `main` 函数测试用例
+- 建议先阅读代码理解原理，然后自己手写一遍
+- 尝试修改代码，添加新功能（如删除操作、其他遍历方式等）
 
-### 3. 重点掌握
+### 3. 重点掌握（面试高频）
 
-- **链表**：头插法、尾插法、逆置（面试高频）
-- **栈与队列**：中缀转后缀、括号匹配
-- **树**：遍历（递归 + 非递归）、线索二叉树
-- **图**：邻接矩阵与邻接表的转换、DFS/BFS
-- **排序**：时间复杂度分析、稳定性判断
+- **链表**：头插法、尾插法、逆置、判断环
+- **栈与队列**：中缀转后缀、括号匹配、用栈实现队列
+- **树**：遍历（递归 + 非递归）、线索二叉树、并查集
+- **图**：邻接矩阵与邻接表的转换、DFS/BFS、最短路径
+- **排序**：时间复杂度分析、稳定性判断、快速排序
 
 ---
 
@@ -248,6 +238,10 @@ RevPostOrderThread(root); // 逆向后序遍历
   - 动态分配的内存及时释放
   - 使用 `new (nothrow)` 检查内存分配是否成功
 
+- **文件组织**：
+  - 每个 `.cpp` 文件独立可编译
+  - 包含数据结构定义 + 操作实现 + `main` 测试函数
+
 ---
 
 ## 🤝 贡献
@@ -259,12 +253,6 @@ RevPostOrderThread(root); // 逆向后序遍历
 ## 📄 许可证
 
 本项目仅供学习交流使用。
-
----
-
-## 📧 联系方式
-
-如有问题或建议，欢迎通过 GitHub Issue 联系。
 
 ---
 

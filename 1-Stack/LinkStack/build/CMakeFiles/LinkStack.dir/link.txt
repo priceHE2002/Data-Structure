@@ -1,1 +1,0 @@
-/usr/bin/c++  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/LinkStack.dir/main.cpp.o CMakeFiles/LinkStack.dir/LinkStack.cpp.o -o LinkStack

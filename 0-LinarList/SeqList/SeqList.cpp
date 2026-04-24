@@ -1,8 +1,15 @@
-// SeqList.cpp
-#include "SeqList.h"
 #include <iostream>
 using namespace std;
 
+#define InitSize 10
+
+typedef struct{
+    int* data;
+    int length;
+    int MaxSize;
+}SeqList;
+
+// 初始化顺序表
 void InitSeqList(SeqList &List)
 {
     List.data = new int[InitSize];
@@ -10,6 +17,7 @@ void InitSeqList(SeqList &List)
     List.MaxSize = InitSize;
 }
 
+// 扩容
 void IncreaseSeqList(SeqList &List, int num)
 {
     int* p = List.data;
@@ -31,6 +39,7 @@ void IncreaseSeqList(SeqList &List, int num)
     delete[] p;
 }
 
+// 插入
 void SeqlistInsert(SeqList &List, int i, int e)
 {
     if(i < 1 || i > List.length + 1)
@@ -54,6 +63,7 @@ void SeqlistInsert(SeqList &List, int i, int e)
     List.length++;
 }
 
+// 删除
 void SeqlistDelete(SeqList &List, int i)
 {
     if(i < 1 || i > List.length)
@@ -70,6 +80,7 @@ void SeqlistDelete(SeqList &List, int i)
     List.length--;
 }
 
+// 查找
 void LocateElem(SeqList List, int e)
 {
     int isElemExist = 0;
@@ -89,6 +100,7 @@ void LocateElem(SeqList List, int e)
     }
 }
 
+// 打印
 void PrintSeqList(SeqList List)
 {
     cout << "该数组为" << endl;
@@ -99,4 +111,31 @@ void PrintSeqList(SeqList List)
     }
     
     cout << endl;
+}
+
+int main()
+{
+    SeqList L;
+    
+    InitSeqList(L);
+    cout << "初始化成功，容量: " << L.MaxSize << endl;
+    
+    IncreaseSeqList(L, 5);
+    cout << "扩容成功，新容量: " << L.MaxSize << endl;
+    
+    SeqlistInsert(L, 1, 1);
+    SeqlistInsert(L, 2, 3);
+    SeqlistInsert(L, 3, 5);
+    PrintSeqList(L);
+    
+    SeqlistDelete(L, 1);
+    cout << "删除第1个元素后：" << endl;
+    PrintSeqList(L);
+    
+    LocateElem(L, 3);
+    LocateElem(L, 6);
+    
+    delete[] L.data;
+    
+    return 0;
 }
