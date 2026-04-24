@@ -127,10 +127,6 @@ bool visited[MaxVertexNum]; //访问标记数组
 
 void BFS(MGraph &G, int v)
 {
-    //将访问标记数组重置为全false
-    for(int i = 0; i < MaxVertexNum; i++) {
-        visited[i] = false;
-    }
 
     queue<int> q; //辅助队列q
     visited[v] = true;//将v的访问标记数组设置为true
@@ -151,6 +147,23 @@ void BFS(MGraph &G, int v)
             }
         }
     }
+}
+
+//对非连通图G进行广度优先遍历
+void BFSTraverse(MGraph &G)
+{
+    //将访问标记数组重置为全false
+    for(int i = 0; i < MaxVertexNum; i++) {
+        visited[i] = false;
+    }
+    for(int j = 0; j < G.vexnum; j++)
+    {
+        if(!visited[j])
+        {
+            BFS(G, j);
+        }
+    }
+
 }
 
 int main()
@@ -188,6 +201,10 @@ int main()
     // ================= 开始测试 BFS =================
 
     // --- 测试 1: 以 A(0) 为起点进行广度优先遍历 ---
+    //将访问标记数组重置为全false
+    for(int i = 0; i < MaxVertexNum; i++) {
+        visited[i] = false;
+    }
     cout << "--- 测试 BFS (起点为 A, 索引 0) ---" << endl;
     cout << "实际 BFS 遍历序列 (索引): ";
     BFS(G, 0); 
@@ -195,6 +212,10 @@ int main()
     cout << "过程解析: 从 0 开始 -> 找到第一层邻居 1, 2 -> 找 1 的邻居 3 -> 找 2 的邻居 4" << endl;
 
     // --- 测试 2: 以 C(2) 为起点进行广度优先遍历 ---
+    //将访问标记数组重置为全false
+    for(int i = 0; i < MaxVertexNum; i++) {
+        visited[i] = false;
+    }
     cout << "\n--- 测试 BFS (起点为 C, 索引 2) ---" << endl;
     cout << "实际 BFS 遍历序列 (索引): ";
     BFS(G, 2); 

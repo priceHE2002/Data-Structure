@@ -99,3 +99,16 @@ bool bracketCheck(char str[],int length)
     DestroyStack(S);
     return isMatch;
 }
+
+int main()
+{
+    char test1[] = "{[()]}";
+    char test2[] = "{[(])}";
+    char test3[] = "((()))";
+
+    cout << "测试1: {[( )]} -> " << (bracketCheck(test1, 6) ? "匹配" : "不匹配") << endl;
+    cout << "测试2: {[(])} -> " << (bracketCheck(test2, 6) ? "匹配" : "不匹配") << endl;
+    cout << "测试3: ((())) -> " << (bracketCheck(test3, 6) ? "匹配" : "不匹配") << endl;
+
+    return 0;
+}

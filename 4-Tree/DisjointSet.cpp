@@ -68,3 +68,18 @@ void Union2(int S[], int root1, int root2)
         S[root1] = root2;//小树合并到大树中
     }
 }
+
+int main()
+{
+    int S[SIZE];
+    Initial(S);
+
+    Union2(S, 0, 1);
+    Union2(S, 2, 3);
+    Union2(S, 0, 2);
+
+    cout << "Find(3) = " << FindPro(S, 3) << endl;
+    cout << "Find(1) = " << FindPro(S, 1) << endl;
+
+    return 0;
+}

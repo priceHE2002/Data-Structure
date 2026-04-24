@@ -62,3 +62,31 @@ bool GetTop(SqStack &S, int &e)
     return true;
 }
 
+int main()
+{
+    SqStack S;
+    int e;
+
+    InitSqStack(S);
+    cout << "顺序栈初始化成功" << endl;
+
+    Push(S, 10);
+    Push(S, 20);
+    Push(S, 30);
+    cout << "入栈: 10, 20, 30" << endl;
+
+    if(GetTop(S, e))
+    {
+        cout << "栈顶元素: " << e << endl;
+    }
+
+    cout << "出栈顺序: ";
+    while(Pop(S, e))
+    {
+        cout << e << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+

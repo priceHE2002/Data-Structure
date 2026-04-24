@@ -123,3 +123,25 @@ void PrintSqBinaryTree(TreeNode a[])
         }
     }
 }
+
+int main()
+{
+    TreeNode tree[MaxSize];
+    InitSqBinaryTree(tree);
+
+    InsertTreeNode(tree, 0, 1);
+    InsertTreeNode(tree, 1, 2);
+    InsertTreeNode(tree, 2, 3);
+    InsertTreeNode(tree, 3, 4);
+    InsertTreeNode(tree, 4, 5);
+
+    PrintSqBinaryTree(tree);
+
+    int parentVal;
+    if(GetParent(tree, 4, parentVal))
+    {
+        cout << "结点5的双亲: " << parentVal << endl;
+    }
+
+    return 0;
+}

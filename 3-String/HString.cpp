@@ -1,4 +1,5 @@
 #include<iostream>
+using namespace std;
 
 const int MaxLen = 255;
 
@@ -287,4 +288,33 @@ int KMP_Index(HString S, HString T,int next[])
     {
         return 0;
     }
-} 
+}
+
+int main()
+{
+    HString S, T;
+    InitHString(S);
+    InitHString(T);
+
+    char strS[] = "hello world";
+    char strT[] = "world";
+    StrAssign(S, strS, 11);
+    StrAssign(T, strT, 5);
+
+    cout << "主串: " << S.ch << endl;
+    cout << "子串: " << T.ch << endl;
+
+    int pos = Index_1(S, T);
+    cout << "朴素匹配位置: " << pos << endl;
+
+    pos = Index_2(S, T);
+    cout << "改进朴素匹配位置: " << pos << endl;
+
+    pos = Index_3(S, T);
+    cout << "子串比较匹配位置: " << pos << endl;
+
+    DestroyHString(S);
+    DestroyHString(T);
+
+    return 0;
+}
