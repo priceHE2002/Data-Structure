@@ -27,23 +27,23 @@ Data-Structure/
 │   └── bracketCheck/
 │       ├── bracketCheck.cpp          # 括号匹配
 │       └── InfixToPostfix.cpp        # 中缀转后缀表达式
-├── Queue/                # 队列
+├── 2-Queue/                # 队列
 │   ├── SqQueue/
 │   │   ├── SqQueue1.cpp              # 顺序队列
 │   │   └── SqQueue2.cpp              # 循环队列
 │   └── LinkQueue/
 │       └── LinkQueue.cpp             # 链队列
-├── String/               # 字符串
+├── 3-String/               # 字符串
 │   └── HString.cpp                   # 堆分配存储的串（含 KMP 算法）
-├── Tree/                 # 树与二叉树
+├── 4-Tree/                 # 树与二叉树
 │   ├── SqBinaryTree.cpp              # 顺序存储二叉树
 │   ├── LinkBiTree.cpp                # 链式存储二叉树
 │   ├── ThreadBiTree.cpp              # 线索二叉树（中序、先序、后序）
 │   └── DisjointSet.cpp               # 并查集
-├── Graph/                # 图
+├── 5-Graph/                # 图
 │   ├── MGraph.cpp                    # 邻接矩阵存储的图
 │   └── ALGraph.cpp                   # 邻接表存储的图
-└── Sort_Algorithm/       # 排序算法
+└── 6-Sort_Algorithm/       # 排序算法
     ├── bubbleSort/
     │   └── BubbleSort.cpp
     ├── inserSort/
