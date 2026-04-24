@@ -1,4 +1,5 @@
 #include<iostream>
+#include<queue>
 using namespace std;
 #define MaxVertexNum 100//顶点数目最大值
 
@@ -49,7 +50,6 @@ void Neighbors(MGraph &G, int x)
 }
 
 //在图G中插入边(x , y)
-//在图G中插入边(x , y)
 void InsertEdge(MGraph &G, int x, int y)
 {
     if(x < 0 || x >= G.vexnum || y < 0 || y >= G.vexnum)
@@ -80,35 +80,126 @@ void InsertVertex(MGraph &G, char X)
     G.vexnum++;
 }
 
+// 求图中顶点x的第一个邻接点，若有则返回顶点号，若x没有邻接点或越界，则返回-1
+int FirstNeighbor(MGraph &G, int x)
+{
+    // 检查索引合法性
+    if (x < 0 || x >= G.vexnum) 
+    {
+        return -1; 
+    }
+
+    // 直接在邻接矩阵第 x 行中查找第一个邻接点
+    for (int j = 0; j < G.vexnum; j++)
+    {
+        if (G.Edge[x][j] == true) 
+        {
+            return j;
+        }
+    }
+    // 如果遍历完都没有找到，说明是孤立点
+    return -1;
+}
+
+// 假设图G中顶点y是顶点x的一个邻接点，返回除y之外顶点x的下一个邻接点的顶点号
+int NextNeighbor(MGraph &G, int x, int y) 
+{
+    // 检查索引合法性，并确保y确实是x的邻接点
+    if (x < 0 || x >= G.vexnum || y < 0 || y >= G.vexnum || G.Edge[x][y] == false) 
+    {
+        return -1; 
+    }
+
+    // 直接从 y 的下一个位置开始寻找下一个邻接点
+    for (int j = y + 1; j < G.vexnum; j++)
+    {
+        if (G.Edge[x][j] == true) 
+        {
+            return j;
+        }
+    }
+
+    // 如果遍历到最后都没找到，说明 y 是 x 的最后一个邻接点
+    return -1;
+}
+
+bool visited[MaxVertexNum]; //访问标记数组
+
+void BFS(MGraph &G, int v)
+{
+    //将访问标记数组重置为全false
+    for(int i = 0; i < MaxVertexNum; i++) {
+        visited[i] = false;
+    }
+
+    queue<int> q; //辅助队列q
+    visited[v] = true;//将v的访问标记数组设置为true
+    cout<< v << " ";//访问v结点，并打印该结点
+    q.push(v);//v结点入队
+
+    while(!q.empty())//当队列q不为空时循环执行以下操作
+    {
+        int u = q.front();//声明整型变量u，用于接收队头元素
+        q.pop();
+        for(int w = FirstNeighbor(G,u); w>= 0 ; w = NextNeighbor(G, u, w))
+        {
+            if(!visited[w])
+            {
+                cout<< w << " ";//访问w结点；并打印该结点
+                visited[w] = true;//将w结点的访问标记数组设置为true
+                q.push(w);//w结点入队
+            }
+        }
+    }
+}
+
 int main()
 {
     MGraph G;
-    // 初始化图
+    
+    // 1. 初始化图
     InitMGraph(G);
-    //插入顶点
-    InsertVertex(G, 'A') ;
-    InsertVertex(G, 'B') ;
-    InsertVertex(G, 'C') ;
-    InsertVertex(G, 'D') ;
-    // 插入边
-    InsertEdge(G, 0, 1); // A-B
-    InsertEdge(G, 0, 2); // A-C
-    InsertEdge(G, 1, 3); // B-D
-    InsertEdge(G, 2, 3); // C-D
     
-    cout << "图初始化完成，顶点数: " << G.vexnum << ", 边数: " << G.edgenum << endl;
+    // 2. 插入顶点 (索引分别是 0:A, 1:B, 2:C, 3:D, 4:E)
+    InsertVertex(G, 'A'); // 0
+    InsertVertex(G, 'B'); // 1
+    InsertVertex(G, 'C'); // 2
+    InsertVertex(G, 'D'); // 3
+    InsertVertex(G, 'E'); // 4
     
-    // 测试 Adjacent
-    cout << "\n--- 测试 Adjacent ---" << endl;
-    cout << "A 和 B 是否相邻? " << (Adjacent(G, 0, 1) ? "是" : "否") << endl;
-    cout << "A 和 D 是否相邻? " << (Adjacent(G, 0, 3) ? "是" : "否") << endl;
+    /* 构建的图结构大致如下：
+       A(0) --- B(1)
+        |        |
+       C(2) --- D(3)
+        |
+       E(4)
+    */
+
+    // 3. 插入边
+    InsertEdge(G, 0, 1); // A - B
+    InsertEdge(G, 0, 2); // A - C
+    InsertEdge(G, 1, 3); // B - D
+    InsertEdge(G, 2, 3); // C - D
+    InsertEdge(G, 2, 4); // C - E
     
-    // 测试 Neighbors
-    cout << "\n--- 测试 Neighbors ---" << endl;
-    Neighbors(G, 0); // A 的邻居
-    Neighbors(G, 1); // B 的邻居
-    Neighbors(G, 2); // C 的邻居
-    Neighbors(G, 3); // D 的邻居
+    cout << "✅ 图初始化完成！" << endl;
+    cout << "📌 顶点数: " << G.vexnum << "，边数: " << G.edgenum << "\n" << endl;
     
+    // ================= 开始测试 BFS =================
+
+    // --- 测试 1: 以 A(0) 为起点进行广度优先遍历 ---
+    cout << "--- 测试 BFS (起点为 A, 索引 0) ---" << endl;
+    cout << "实际 BFS 遍历序列 (索引): ";
+    BFS(G, 0); 
+    cout << "\n预期 BFS 遍历序列 (索引): 0 1 2 3 4" << endl;
+    cout << "过程解析: 从 0 开始 -> 找到第一层邻居 1, 2 -> 找 1 的邻居 3 -> 找 2 的邻居 4" << endl;
+
+    // --- 测试 2: 以 C(2) 为起点进行广度优先遍历 ---
+    cout << "\n--- 测试 BFS (起点为 C, 索引 2) ---" << endl;
+    cout << "实际 BFS 遍历序列 (索引): ";
+    BFS(G, 2); 
+    cout << "\n预期 BFS 遍历序列 (索引): 2 0 3 4 1" << endl;
+    cout << "过程解析: 从 2 开始 -> 找到第一层所有邻居 0, 3, 4 -> 再找 0 的邻居 1" << endl;
+
     return 0;
 }
