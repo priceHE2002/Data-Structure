@@ -222,6 +222,38 @@ void BFSTraverse(MGraph &G)
     }
 }
 
+//从顶点v开始，对图G进行深度优先遍历
+void DFS(MGraph &G,int v)
+{
+    cout<<v<<" "; //访问v结点
+    visited[v] = true; //将v结点的访问数组设置为true
+    for(int w = 0; w < G.vexnum; w++)
+    {
+        if(!visited[w] && G.Edge[v][w] == true)//如果w结点没有被访问，并且v和w之间有边
+        {
+            DFS(G, w);
+        }
+    }
+}
+
+// 对非连通图（或一般图）进行完整的深度优先遍历
+void DFSTraverse(MGraph &G)
+{
+    // 将访问标记数组重置为全 false
+    for(int i = 0; i < MaxVertexNum; i++) {
+        visited[i] = false;
+    }
+    
+    // 遍历所有顶点作为可能的起点，处理非连通图的孤岛问题
+    for(int j = 0; j < G.vexnum; j++)
+    {
+        if(!visited[j]) // 如果没被访问过，就以它为起点向深处探索
+        {
+            DFS(G, j);
+        }
+    }
+}
+
 int main()
 {
     MGraph G;
@@ -310,6 +342,19 @@ int main()
     
     cout << "2. 新建图 T (包含4个顶点, 3条无环边，完全连通)。" << endl;
     cout << "   图 T 是否是一棵树？ " << (isTree(T) ? "✅ 是" : "❌ 否") << " (预期: 是)\n" << endl;
+
+        // ================= 测试 5：深度优先遍历 (DFS) =================
+    cout << "========== 测试 5：深度优先遍历 (DFS) ==========" << endl;
+    
+    // 单次 DFS 测试前，必须重置 visited 数组
+    for(int i = 0; i < MaxVertexNum; i++) visited[i] = false;
+    cout << "1. 从 A(0) 开始的单次 DFS: ";
+    DFS(G, 0); 
+    cout << "\n   (预期输出: 0 1 3 2 4。 解释：0->1, 1->3, 3->2, 2->4，一条路走到黑)\n" << endl;
+
+    cout << "2. 对整个非连通图 G 进行 DFSTraverse 全局遍历: ";
+    DFSTraverse(G); 
+    cout << "\n   (预期输出: 0 1 3 2 4 5。孤立点 5 会在主循环中被触发)\n" << endl;
 
     return 0;
 }
