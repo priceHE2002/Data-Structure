@@ -222,6 +222,52 @@ void BFSTraverse(MGraph &G)
     }
 }
 
+int d[MaxVertexNum];//数组d用于记录顶点v到每个顶点的路径长度
+int path[MaxVertexNum]; // 数组path用于记录最短路径中当前顶点的前驱顶点（从哪个顶点过来的）
+
+// BFS求解单源最短路径
+void BFS_Min_Distance(MGraph &G, int v)
+{
+    // 合法性检查，防止传入不存在的顶点导致数组越界
+    if(v < 0 || v >= G.vexnum) return; 
+    
+    queue<int> q; // 辅助队列，用于存放待处理其邻居的顶点
+    
+    // 1. 初始化阶段
+    for(int i = 0; i < G.vexnum ; i++) // 遍历图中所有的有效顶点
+    {
+        d[i] = -1;         // 初始化为 -1，表示尚未发现路径（或不可达）
+        path[i] = -1;      // 初始化为 -1，表示暂时没有前驱结点
+        visited[i] = false; // 初始化所有顶点为未访问状态
+    }
+    
+    // 2. 处理源点 v
+    d[v] = 0;          // 源点到自身的距离显然为 0
+    q.push(v);         // 源点 v 入队，作为 BFS 扩散的起点
+    visited[v] = true; // 标记源点已被访问，防止重复入队
+    
+    // 3. 广度优先搜索
+    while(!q.empty()) // 当队列不为空时，说明还有顶点需要向外扩散寻找邻居
+    {
+        int u = q.front(); // 取出当前的队头顶点 u
+        q.pop();           // 队头元素出队
+        
+        // 遍历整个邻接矩阵的第 u 行，寻找 u 的所有邻接点
+        for(int w = 0; w < G.vexnum; w++) 
+        {
+            // 如果 w 尚未被访问过，并且 u 和 w 之间存在一条边
+            if(!visited[w] && G.Edge[u][w] == true) 
+            {
+                // 核心逻辑：因为是 BFS，第一次访问到 w 时走过的路径一定是最短的
+                d[w] = d[u] + 1; // v 到 w 的最短距离 = v 到 u 的距离 + 1 条边
+                path[w] = u;     // 记录 w 的前驱结点是 u (即最短路径是从 u 走到 w 的)
+                q.push(w);         // 将新发现的顶点 w 入队，下一层将从 w 继续向外扩散
+                visited[w] = true; // 立即将 w 标记为已访问，防止被同一层或后续层的其他顶点重复发现
+            }
+        }
+    }
+}
+
 //从顶点v开始，对图G进行深度优先遍历
 void DFS(MGraph &G,int v)
 {
@@ -355,6 +401,55 @@ int main()
     cout << "2. 对整个非连通图 G 进行 DFSTraverse 全局遍历: ";
     DFSTraverse(G); 
     cout << "\n   (预期输出: 0 1 3 2 4 5。孤立点 5 会在主循环中被触发)\n" << endl;
+    
+        // ================= 测试 6：BFS 单源最短路径 =================
+    cout << "========== 测试 6：BFS 单源最短路径 ==========" << endl;
+    
+    int start_v = 0; // 我们选择从 A(0) 开始测试
+    cout << "正在计算从顶点 " << G.Vex[start_v] << " 到其余各顶点的最短路径...\n" << endl;
+    
+    // 1. 调用算法计算 d 和 path 数组
+    BFS_Min_Distance(G, start_v);
+    
+    // 2. 遍历所有顶点，打印距离并回溯路径
+    for(int i = 0; i < G.vexnum; i++)
+    {
+        cout << "目标顶点 " << G.Vex[i] << " : ";
+        
+        if(d[i] == -1)
+        {
+            cout << "无法到达 (图不连通)" << endl;
+        }
+        else if (i == start_v)
+        {
+            cout << "距离 = 0 (这是起点自身)" << endl;
+        }
+        else
+        {
+            cout << "距离 = " << d[i] << "， 最短路径轨迹: ";
+            
+            // 利用 path 数组逆向回溯路径
+            int route[MaxVertexNum]; // 用于临时存放路径节点
+            int count = 0;           // 记录路径长度
+            int curr = i;            // 从目标节点开始往回找
+            
+            // 只要没回到起点前（起点的 path 是 -1），就一直回溯
+            while(curr != -1)
+            {
+                route[count++] = curr; // 将当前节点加入轨迹
+                curr = path[curr];     // 顺藤摸瓜找到它是从哪个节点过来的
+            }
+            
+            // 因为是逆向回溯的，所以我们需要倒序打印，才能得到正向的 A -> ... 路径
+            for(int j = count - 1; j >= 0; j--)
+            {
+                cout << G.Vex[route[j]];
+                if(j > 0) cout << " -> "; // 不是最后一个节点就打印箭头
+            }
+            cout << endl;
+        }
+    }
+    cout << endl;
 
     return 0;
 }
