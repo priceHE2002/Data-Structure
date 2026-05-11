@@ -22,7 +22,7 @@ int Binary_Search(SSTable T,int key)
 {
     int low = 0 , high = T.tableLen - 1;
     int mid;
-    while(low <= high)
+    while(low <= high) 
     {
         mid = (low + high) / 2;
         if(key == T.data[mid])
