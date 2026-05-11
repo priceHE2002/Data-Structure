@@ -60,17 +60,37 @@ void CopyArray(int src[], int dst[], int n)
         dst[i] = src[i];
 }
 
+// 希尔排序算法
+void ShellSort(int array[], int n)
+{
+    int i, j, temp, d;
+    for (d = n / 2; d >= 1; d /= 2)
+    {
+        for (i = d; i < n; i++)
+        {
+            if (array[i] < array[i - d])
+            {
+                temp = array[i];
+                for (j = i - d; j >= 0 && array[j] > temp; j -= d)
+                    array[j + d] = array[j];
+                array[j + d] = temp;
+            }
+        }
+    }
+}
+
 int main()
 {
     int arr1[] = {5, 2, 8, 1, 9, 3, 7, 4, 6};
     int n1 = sizeof(arr1) / sizeof(arr1[0]);
-    int arr2[n1];
+    int arr2[n1], arr_shell[n1];
 
     cout << "========== 测试1: 随机数组 ==========" << endl;
     cout << "原始数组:           ";
     PrintArray(arr1, n1);
 
     CopyArray(arr1, arr2, n1);
+    CopyArray(arr1, arr_shell, n1);
     DirectInsertSort(arr1, n1);
     cout << "直接插入排序结果:   ";
     PrintArray(arr1, n1);
@@ -78,17 +98,22 @@ int main()
     BinaryInsertSort(arr2, n1);
     cout << "折半插入排序结果:   ";
     PrintArray(arr2, n1);
+
+    ShellSort(arr_shell, n1);
+    cout << "希尔排序结果:       ";
+    PrintArray(arr_shell, n1);
     cout << endl;
 
     int arr3[] = {1, 2, 3, 4, 5, 6};
     int n2 = sizeof(arr3) / sizeof(arr3[0]);
-    int arr4[n2];
+    int arr4[n2], arr_shell2[n2];
 
     cout << "========== 测试2: 已排序数组 ==========" << endl;
     cout << "原始数组:           ";
     PrintArray(arr3, n2);
 
     CopyArray(arr3, arr4, n2);
+    CopyArray(arr3, arr_shell2, n2);
     DirectInsertSort(arr3, n2);
     cout << "直接插入排序结果:   ";
     PrintArray(arr3, n2);
@@ -96,17 +121,22 @@ int main()
     BinaryInsertSort(arr4, n2);
     cout << "折半插入排序结果:   ";
     PrintArray(arr4, n2);
+
+    ShellSort(arr_shell2, n2);
+    cout << "希尔排序结果:       ";
+    PrintArray(arr_shell2, n2);
     cout << endl;
 
     int arr5[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
     int n3 = sizeof(arr5) / sizeof(arr5[0]);
-    int arr6[n3];
+    int arr6[n3], arr_shell3[n3];
 
     cout << "========== 测试3: 逆序数组 ==========" << endl;
     cout << "原始数组:           ";
     PrintArray(arr5, n3);
 
     CopyArray(arr5, arr6, n3);
+    CopyArray(arr5, arr_shell3, n3);
     DirectInsertSort(arr5, n3);
     cout << "直接插入排序结果:   ";
     PrintArray(arr5, n3);
@@ -114,17 +144,22 @@ int main()
     BinaryInsertSort(arr6, n3);
     cout << "折半插入排序结果:   ";
     PrintArray(arr6, n3);
+
+    ShellSort(arr_shell3, n3);
+    cout << "希尔排序结果:       ";
+    PrintArray(arr_shell3, n3);
     cout << endl;
 
     int arr7[] = {4, 4, 2, 2, 3, 3, 1, 1};
     int n4 = sizeof(arr7) / sizeof(arr7[0]);
-    int arr8[n4];
+    int arr8[n4], arr_shell4[n4];
 
     cout << "========== 测试4: 含重复元素 ==========" << endl;
     cout << "原始数组:           ";
     PrintArray(arr7, n4);
 
     CopyArray(arr7, arr8, n4);
+    CopyArray(arr7, arr_shell4, n4);
     DirectInsertSort(arr7, n4);
     cout << "直接插入排序结果:   ";
     PrintArray(arr7, n4);
@@ -132,17 +167,22 @@ int main()
     BinaryInsertSort(arr8, n4);
     cout << "折半插入排序结果:   ";
     PrintArray(arr8, n4);
+
+    ShellSort(arr_shell4, n4);
+    cout << "希尔排序结果:       ";
+    PrintArray(arr_shell4, n4);
     cout << endl;
 
     int arr9[] = {42};
     int n5 = sizeof(arr9) / sizeof(arr9[0]);
-    int arr10[n5];
+    int arr10[n5], arr_shell5[n5];
 
     cout << "========== 测试5: 单元素数组 ==========" << endl;
     cout << "原始数组:           ";
     PrintArray(arr9, n5);
 
     CopyArray(arr9, arr10, n5);
+    CopyArray(arr9, arr_shell5, n5);
     DirectInsertSort(arr9, n5);
     cout << "直接插入排序结果:   ";
     PrintArray(arr9, n5);
@@ -150,6 +190,10 @@ int main()
     BinaryInsertSort(arr10, n5);
     cout << "折半插入排序结果:   ";
     PrintArray(arr10, n5);
+
+    ShellSort(arr_shell5, n5);
+    cout << "希尔排序结果:       ";
+    PrintArray(arr_shell5, n5);
 
     return 0;
 }
