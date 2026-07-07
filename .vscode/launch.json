@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C++ 调试当前文件",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${fileDirname}/${fileBasenameNoExtension}",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "C++ build"
+    },
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/heyuhang/Date_Structure/7-Sort_Algorithm",
+      "program": "/Users/heyuhang/Date_Structure/7-Sort_Algorithm/build/Debug/outDebug"
+    }
+  ]
+}
