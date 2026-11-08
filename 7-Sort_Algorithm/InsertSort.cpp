@@ -26,6 +26,7 @@ void BinaryInsertSort(int array[] , int n)
     for (i = 1; i < n ; i++)
     {
         temp = array[i];
+        low = 1;
         low = 0;
         high = i - 1;
         while(low <= high)//折半查找
