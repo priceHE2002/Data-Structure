@@ -1,3 +1,13 @@
 *.o
 *.out
 .DS_Store
+
+# macOS 调试符号
+*.dSYM/
+
+# 编译产物（无扩展名的可执行文件）
+5-Graph/ALGraph
+6-Search_Algorithm/BST_Search
+6-Search_Algorithm/RB_Tree
+8-Other_Algorithm/Clustering/cluster_experiment
+8-Other_Algorithm/Kmeans/main

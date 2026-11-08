@@ -434,6 +434,7 @@ public:
         kmeans_on_bottleneck();
 
         double grad_z[SIZE][BOTTLENECK];
+        double prev_kl = 1e9;
 
         for (int iter = 0; iter < 200; iter++) {
             compute_q();

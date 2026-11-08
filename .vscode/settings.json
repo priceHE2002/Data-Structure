@@ -1,6 +1,9 @@
 {
   "clangd.path": "/opt/homebrew/opt/llvm/bin/clangd",
-  "clangd.fallbackFlags": ["-std=c++20", "-stdlib=libc++"],
+  "clangd.fallbackFlags": [
+    "-std=c++20",
+    "-stdlib=libc++"
+  ],
   "C_Cpp_Runner.cCompilerPath": "clang",
   "C_Cpp_Runner.cppCompilerPath": "clang++",
   "C_Cpp_Runner.debuggerPath": "lldb",
